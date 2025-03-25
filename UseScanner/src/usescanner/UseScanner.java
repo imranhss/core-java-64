@@ -22,6 +22,7 @@ public class UseScanner {
         float result=(float) number1 / number2;
         
         System.out.println("Result is "+result);
+        
                 
         
        
