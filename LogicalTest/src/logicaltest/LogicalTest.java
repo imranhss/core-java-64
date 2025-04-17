@@ -14,23 +14,25 @@ public class LogicalTest {
 
         int[] numbers = new int[size];
 
+        System.out.println("My Numbers are " + Arrays.toString(numbers));
+
 //        int maxNumber = 0;  // numbers[0]
 //        int minNumber = 999999999; // numbers[0]
-
-        int maxNumber = numbers[0];
-        int minNumber = numbers[0];
-
         for (int index = 0; index < size; index++) {
 
             System.out.println("Enter number " + (index + 1));
             int userInput = s.nextInt();
             numbers[index] = userInput;
 
+            //  [10, 50, 0, 0, 0, 0]
         }
 
         System.out.println("My Numbers are " + Arrays.toString(numbers));
 
-        // [10, 50, 20, 60, 30]
+        int maxNumber = numbers[0];
+        int minNumber = numbers[0];
+
+        // [90, 10, 50, 20, 60, 30]
         for (int number : numbers) {
 
             if (number > maxNumber) {
