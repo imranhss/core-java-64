@@ -14,11 +14,11 @@ public class LogicalTest {
 
         int[] numbers = new int[size];
 
-        int maxNumber = 0;  // numbers[0]
-        int minNumber = 999999999; // numbers[0]
+//        int maxNumber = 0;  // numbers[0]
+//        int minNumber = 999999999; // numbers[0]
 
-//        int maxNumber = numbers[0];
-//        int minNumber = numbers[0];
+        int maxNumber = numbers[0];
+        int minNumber = numbers[0];
 
         for (int index = 0; index < size; index++) {
 
