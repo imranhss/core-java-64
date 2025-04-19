@@ -25,7 +25,7 @@ public class LearnMultilDimnetionalArray {
         
             for(int col=0; col< myArrays[row].length; col++){
                 
-                System.out.print(myArrays[row][col]);            
+                System.out.print(myArrays[row][col]+ " ");            
             }  
             
             System.out.println("\n");
