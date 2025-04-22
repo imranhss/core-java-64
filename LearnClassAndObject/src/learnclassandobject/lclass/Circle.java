@@ -2,11 +2,9 @@
 package learnclassandobject.lclass;
 
 
-public class Circle {
+public class Circle {   
     
-    
-    double radius;
-
+   public static double radius;
 
     public Circle() {
     }
