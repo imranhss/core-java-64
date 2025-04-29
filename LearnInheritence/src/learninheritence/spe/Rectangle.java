@@ -1,5 +1,6 @@
 package learninheritence.spe;
 
+import java.util.Date;
 import learninheritence.general.Geometric;
 
 public class Rectangle extends Geometric {
@@ -43,10 +44,21 @@ public class Rectangle extends Geometric {
     }
 
     public double getPerimeter() {
-
+        
+        
         return 2 * (width + height);
     }
     
+    @Override
+    public void setColor(String color) {
+        super.setColor(color); 
+        
+        
+    }
+
+    
+    
+
     
 
 }

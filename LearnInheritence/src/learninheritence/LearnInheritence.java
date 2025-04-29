@@ -13,14 +13,20 @@ public class LearnInheritence {
             Circle c=new Circle(1);
             
             Rectangle r=new Rectangle(2,5);
-            r.setColor("Red");
+            Rectangle r1=new Rectangle(2,5);
             
-            System.out.println(c.toString());
+            System.out.println(r.equals(r));
+           
             
-            System.out.println(c.getColor());
-            System.out.println(c.getRadius());
-            System.out.println(c.getArea());
-            System.out.println(c.getDiameter());
+//            System.out.println(r.getArea());
+//            System.out.println(r1.getArea());
+            
+//            System.out.println(c.toString());
+//            
+//            System.out.println(c.getColor());
+//            System.out.println(c.getRadius());
+//            System.out.println(c.getArea());
+//            System.out.println(c.getDiameter());
             
             
             
