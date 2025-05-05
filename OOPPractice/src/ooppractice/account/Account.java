@@ -59,7 +59,7 @@ public class Account {
     // Method to display account details
     public void printDetails() {
         System.out.println("Account Number: " + accountNumber);
-        System.out.println("Balance: $" + balance);
+        System.out.println("Balance: $" + this.getBalance());
     }
 
 }

@@ -35,10 +35,13 @@ public class CurrentAccount extends Account {
     @Override
     public void withdraw(double amount) {
 
-        double balance = getBalance();
+        double balance = super.getBalance();
 
         if (amount > 0 && balance + overdraftLimit >= amount) {
             balance -= amount;
+            
+            super.setBalance(balance);
+            
             System.out.println(amount + " withdrawn successfully (with overdraft if needed).");
         } else {
             System.out.println("Withdrawal exceeds overdraft limit or invalid amount.");
