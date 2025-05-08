@@ -1,9 +1,9 @@
-
 package learnarraylist.student;
 
+import java.util.Comparator;
 
-public class Student {
-    
+public class Student implements Comparable<Student>{
+
     private String name;
     private String email;
     private int id;
@@ -22,14 +22,13 @@ public class Student {
     }
 
     public void setName(String name) {
-        
-        if(name.length()>=6  && name.length() <=20){
+
+        if (name.length() >= 6 && name.length() <= 20) {
             this.name = name;
-        }
-        else{
+        } else {
             System.out.println("Name must be between 6 to 20 char.");
-        }   
-        
+        }
+
     }
 
     public String getEmail() {
@@ -47,27 +46,27 @@ public class Student {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
-    
-    public  void printStudentDetails(){
-    
-        System.out.println("Name : "+name +"\n"
-        +"Email : "+email+"\n"
-        +"ID :"+ id);
-    
+
+    public void printStudentDetails() {
+
+        System.out.println("Name : " + name + "\n"
+                + "Email : " + email + "\n"
+                + "ID :" + id);
+
     }
 
     @Override
     public String toString() {
         return "Student{" + "name=" + name + ", email=" + email + ", id=" + id + '}';
     }
+
+    @Override
+    public int compareTo(Student o) {
+        
+    return Integer.compare(this.id, o.id);
     
-    
-    
-    
-    
-    
-    
-    
+    }
+
+   
+
 }

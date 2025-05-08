@@ -2,6 +2,9 @@ package learnarraylist;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 import learnarraylist.student.Student;
 
 public class LearnArrayList {
@@ -22,6 +25,9 @@ public class LearnArrayList {
 //            System.out.println(student);        
 //        }
         // studentList.remove(s);
+        //studentList.sort(Comparator.comparing(Student::getEmail));
+        
+       Collections.sort(studentList);
 
         for (int index = 0; index < studentList.size(); index++) {
             System.out.println(studentList.get(index).getName());
@@ -42,6 +48,10 @@ public class LearnArrayList {
 //            System.out.println(i);
 //        }
 
+
+
+
+        System.out.println(studentList);
     }
 
 }

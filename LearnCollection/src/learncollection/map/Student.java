@@ -1,5 +1,7 @@
 package learncollection.map;
 
+import java.util.Objects;
+
 public class Student {
 
     private int studentId;
@@ -44,6 +46,38 @@ public class Student {
         return "Student{" + "studentId=" + studentId + ", name=" + name + ", email=" + email + '}';
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + this.studentId;
+        hash = 67 * hash + Objects.hashCode(this.name);
+        hash = 67 * hash + Objects.hashCode(this.email);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Student other = (Student) obj;
+        if (this.studentId != other.studentId) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return Objects.equals(this.email, other.email);
+    }
+
    
+    
+    
     
 }
