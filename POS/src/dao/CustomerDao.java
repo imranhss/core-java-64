@@ -83,7 +83,7 @@ public class CustomerDao {
 
     }
 
-    public void deleteCutomer(int id, JTable jt) {
+    public void deleteCustomer(int id, JTable jt) {
 
         String sql = "delete from customer where id=?";
 
