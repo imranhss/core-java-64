@@ -51,4 +51,50 @@ public class StockDao {
         return stockList;
     }
 
+    public void saveStock( String productName, float quantity, String category) {
+       
+        sql= "insert into stock(productName, quantity, category) values(?,?,?)";
+        try {
+            ps=util.getCon().prepareStatement(sql);
+            
+            ps.setString(1, productName);
+            ps.setFloat(2, quantity);
+            ps.setString(3, category);
+            
+            ps.executeUpdate();
+            
+            ps.close();
+            util.getCon().close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(StockDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+    }
+    
+    
+     public void updateStockQuantityByProductName( String productName, float  quantity) {
+    
+         sql="update stock set quantity = quantity + ? where productName = ?";
+         
+        try {
+            ps=util.getCon().prepareStatement(sql);
+            
+            ps.setFloat(1, quantity);
+            ps.setString(2, productName);
+            
+            ps.executeUpdate();
+            
+            ps.close();
+            util.getCon().close();            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(StockDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+     }
+     
+     
+     
+
 }

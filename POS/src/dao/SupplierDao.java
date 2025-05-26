@@ -4,11 +4,15 @@
  */
 package dao;
 
+import entity.Supplier;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -134,5 +138,53 @@ public class SupplierDao {
         }
 
     }
+    
+    
+    public void showAllSupplierToPurchaseComboBox(JComboBox<String> supplierComboList) {
+
+        List<Supplier> supplierList=new ArrayList<>();
+        
+        supplierComboList.removeAllItems();       
+        
+
+        String sql = "select * from suppliers";
+
+        try {
+            PreparedStatement ps = util.getCon().prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String cell = rs.getString("cell");
+                String address = rs.getString("address");
+                String contactPerson = rs.getString("contactPerson");
+
+                // Add row to table model
+                Supplier s=new Supplier(id, name, address, cell, email, contactPerson);
+                supplierList.add(s);
+            }
+
+            rs.close();
+            ps.close();
+            util.getCon().close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SupplierDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        for(Supplier su: supplierList){
+            supplierComboList.addItem(su.getName());
+        }
+
+    }
+
+    
+    
+    
+    
 
 }
