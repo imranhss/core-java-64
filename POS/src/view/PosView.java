@@ -12,6 +12,7 @@ import dao.ReportDao;
 import dao.SalesDao;
 import dao.StockDao;
 import dao.SupplierDao;
+import entity.Sales;
 import entity.Stock;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -50,8 +51,9 @@ public class PosView extends javax.swing.JFrame {
         purchaseDao.loadCategory(comboPurchaseCategory);
         supplierDao.showAllSupplierToPurchaseComboBox(comboPurchaseSupplierName);
         productDao.loadCategoryToProductCombo(comboProductCategory);
-        
+
         salesDao.loadCategory(comboSalesCategory);
+        customerDao.showAllCustomer(comboSalesCustomer);
 
         stockDao.getAllStock(tblStock);
 
@@ -65,18 +67,44 @@ public class PosView extends javax.swing.JFrame {
             }
         }
         );
-        
-        comboSalesCategory.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
+
+//        comboSalesCategory.addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent e) {
+//                String categoryName = comboSalesCategory.getSelectedItem().toString();
+//
+//                salesDao.loadProduct(comboSalesProductName, categoryName);
+//
+//            }
+//        }
+//        );
+
+        comboSalesCategory.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED && comboSalesCategory.getSelectedItem() != null) {
                 String categoryName = comboSalesCategory.getSelectedItem().toString();
-
                 salesDao.loadProduct(comboSalesProductName, categoryName);
-
             }
-        }
-        );
+        });
 
+        comboSalesProductName.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED && comboSalesProductName.getSelectedItem() != null) {
+                String productName = comboSalesProductName.getSelectedItem().toString();
+                float quantity = stockDao.getStockQuantityByProductName(productName);
+                lblSalesStock.setText(String.valueOf(quantity));
+            }
+        });
+
+//        comboSalesProductName.addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent e) {
+//                String productName = comboSalesProductName.getSelectedItem().toString();
+//
+//                float quantity = stockDao.getStockQuantityByProductName(productName);
+//                lblSalesStock.setText(String.valueOf(quantity));
+//
+//            }
+//        }
+//        );
 //        comboPurchaseProductName.addItemListener(new ItemListener() {
 //            @Override
 //            public void itemStateChanged(ItemEvent e) {
@@ -1048,7 +1076,7 @@ public class PosView extends javax.swing.JFrame {
 
         jLabel37.setText("Stock");
 
-        lblSalesStock.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        lblSalesStock.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
 
         jLabel39.setText("Customer");
 
@@ -1142,13 +1170,14 @@ public class PosView extends javax.swing.JFrame {
             .addGroup(jPanel20Layout.createSequentialGroup()
                 .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel35)
-                    .addComponent(comboSalesCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel36)
-                    .addComponent(comboSalesProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel37)
-                    .addComponent(lblSalesStock, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSalesStock, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel35)
+                        .addComponent(comboSalesCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel36)
+                        .addComponent(comboSalesProductName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel37)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel39)
@@ -1722,6 +1751,7 @@ public class PosView extends javax.swing.JFrame {
     private void btnStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStockMouseClicked
         // TODO add your handling code here:
         tabMain.setSelectedIndex(6);
+        stockDao.getAllStock(tblStock);
     }//GEN-LAST:event_btnStockMouseClicked
 
     private void btnReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReportMouseClicked
@@ -1772,6 +1802,14 @@ public class PosView extends javax.swing.JFrame {
         float totalPrice = unitPrice * quantity;
 
         txtSalesTotalPrice.setText(String.valueOf(totalPrice));
+        
+        float stock = Float.parseFloat(lblSalesStock.getText());
+        
+        if(stock < quantity){
+            JOptionPane.showMessageDialog(null, "Sales Quantity not more than Stock Quantity");
+            txtSalesQuantity.requestFocus();
+        }
+        
 
 
     }//GEN-LAST:event_txtSalesQuantityFocusLost
@@ -1782,20 +1820,34 @@ public class PosView extends javax.swing.JFrame {
         float quantity = Float.parseFloat(txtSalesQuantity.getText().trim());
 
         float totalPrice = unitPrice * quantity;
-        
-        float discount=Float.parseFloat(txtSalesDiscount.getText().trim());
-        
-        float actualAmount =(float) Math.ceil((totalPrice - (totalPrice * (discount/100))));
+
+        float discount = Float.parseFloat(txtSalesDiscount.getText().trim());
+
+        float actualAmount = (float) Math.ceil((totalPrice - (totalPrice * (discount / 100))));
 
         txtSalesActualAmount.setText(String.valueOf(actualAmount));
-        
+
     }//GEN-LAST:event_txtSalesDiscountFocusLost
 
     private void btnSalesSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalesSaveMouseClicked
         // TODO add your handling code here:
+        String category = comboSalesCategory.getSelectedItem().toString();
+        String productName = comboSalesProductName.getSelectedItem().toString();
+        String customerName = comboSalesCustomer.getSelectedItem().toString();
+        float quantity = Float.parseFloat(txtSalesQuantity.getText().trim());
+        float unitPrice = Float.parseFloat(txtSalesUnitPrice.getText().trim());
+        float totalPrice = Float.parseFloat(txtSalesTotalPrice.getText().trim());
+        float discount = Float.parseFloat(txtSalesDiscount.getText().trim());
+        float actualAmount = Float.parseFloat(txtSalesActualAmount.getText().trim());
         
+        Sales s = new Sales(category, productName, customerName, unitPrice, quantity, totalPrice, discount, actualAmount);
         
+        salesDao.saveSales(s);
         
+        stockDao.updateStockQuantityByProductNameSales(productName, quantity);
+            
+        
+
     }//GEN-LAST:event_btnSalesSaveMouseClicked
 
     /**

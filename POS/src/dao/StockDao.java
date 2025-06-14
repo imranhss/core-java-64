@@ -125,5 +125,54 @@ public class StockDao {
         }
 
     }
+    
+    
+    
+    public float getStockQuantityByProductName(String productName){
+    
+        sql= "select quantity from stock where productName = ?";
+    
+        float quantity=0;
+        
+        try {
+            ps=util.getCon().prepareStatement(sql);
+            ps.setString(1, productName);
+            
+            rs=ps.executeQuery();
+            
+            while(rs.next()){
+            
+                quantity = rs.getFloat("quantity");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(StockDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return quantity;
+    }
+    
+    
+    
+    public void updateStockQuantityByProductNameSales(String productName, float quantity) {
+
+        sql = "update stock set quantity = quantity - ? where productName = ?";
+
+        try {
+            ps = util.getCon().prepareStatement(sql);
+
+            ps.setFloat(1, quantity);
+            ps.setString(2, productName);
+
+            ps.executeUpdate();
+
+            ps.close();
+            util.getCon().close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(StockDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
 }

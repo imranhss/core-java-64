@@ -19,6 +19,7 @@ public class CategoryDao {
     
      DatabaseUtil util = new DatabaseUtil();
     PreparedStatement ps;
+    
      public void saveCategory(String name, JTable jt) {
 
         String sql = "insert into category(name) values(?)";
